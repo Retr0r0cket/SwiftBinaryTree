@@ -10,8 +10,14 @@ import Testing
     let swapped = root.swapChildren()
 
     // After swap, left should be what originally was right, and right should be what originally was left.
-    assert(swapped.left?.value as? Int == rightChild.value, "swapChildren: Left child should match original right child's value")
-    assert(swapped.right?.value as? Int == leftChild.value, "swapChildren: Right child should match original left child's value")
+    assert(
+        swapped.left?.value as? Int == rightChild.value,
+        "swapChildren: Left child should match original right child's value"
+    )
+    assert(
+        swapped.right?.value as? Int == leftChild.value,
+        "swapChildren: Right child should match original left child's value"
+    )
 }
 
 @Test func testSwapRootAndLeftSuccess() {
@@ -28,8 +34,14 @@ import Testing
     }
 
     // After swap, new left = original right, new right = original left.
-    assert(swapped?.left?.value as? Int == rightChild.value, "swapRootAndLeft: left child should be the original right child")
-    assert(swapped?.right?.value as? Int == leftChild.value, "swapRootAndLeft: right child should be the original left child")
+    assert(
+        swapped?.left?.value as? Int == rightChild.value,
+        "swapRootAndLeft: left child should be the original right child"
+    )
+    assert(
+        swapped?.right?.value as? Int == leftChild.value,
+        "swapRootAndLeft: right child should be the original left child"
+    )
 }
 
 @Test func testSwapRootAndLeftNoLeft() {
@@ -74,8 +86,14 @@ import Testing
         assertionFailure("swapRootAndRight threw an unexpected error: \(error)")
     }
 
-    assert(swapped?.left?.value as? Int == rightChild.value, "swapRootAndRight: left child should be the original right child")
-    assert(swapped?.right?.value as? Int == leftChild.value, "swapRootAndRight: right child should be the original left child")
+    assert(
+        swapped?.left?.value as? Int == rightChild.value,
+        "swapRootAndRight: left child should be the original right child"
+    )
+    assert(
+        swapped?.right?.value as? Int == leftChild.value,
+        "swapRootAndRight: right child should be the original left child"
+    )
 }
 
 @Test func testSwapRootAndRightNoRight() {

@@ -5,8 +5,11 @@
 // Created by Retr0r0cket on 5/15/25.
 // 
 
+/// Error types for BinaryTreeNode operations.
 public enum BinaryTreeError: Error {
+    /// Error thrown when a node is not found.
     case noSuchNode
+    /// Error thrown when a node is invalid (e.g., not a leaf or root).
     case invalidNode
 }
 

@@ -9,16 +9,13 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Swift
+name: swift
 
 on: 
   push:
-    paths:
-      Sources/**
-      .github/workflows/swift.yml
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
   
 
 jobs:
@@ -35,6 +32,13 @@ jobs:
           swift-version: ${{ matrix.swift }}
       - uses: actions/checkout@v4
       - name: Build
-        run: swift build
+        run: swift build -v
       - name: Run tests
-        run: swift test
+        run: swift test -v
+      - name: Generate Documentation
+        run: swift package generate-documentation --target SwiftBinaryTree --output-path ./docs --transform-for-static-hosting
+      - name: Upload Documentation Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: ./docs
