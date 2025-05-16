@@ -20,16 +20,11 @@ on:
 
 jobs:
   build-test-and-docs:
-    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        swift: ["6.1"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: swift-actions/setup-swift@682457186b71c25a884c45c06f859febbe259240
         with:
-          swift-version: ${{ matrix.swift }}
+          swift-version: "6.1"
       - uses: actions/checkout@v4
       - name: Build
         run: swift build -v
@@ -47,3 +42,13 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
+  deploy-docs:
+    needs: build-test-and-docs
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
