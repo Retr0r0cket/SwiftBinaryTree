@@ -11,7 +11,15 @@
 
 name: Swift
 
-on: [push]
+on: 
+  push:
+    paths:
+      Sources/**
+      .github/workflows/swift.yml
+    branches: [main]
+  pull_request:
+    branches: [main]
+  
 
 jobs:
   build:
