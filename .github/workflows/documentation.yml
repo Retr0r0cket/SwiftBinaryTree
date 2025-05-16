@@ -1,5 +1,5 @@
 # Adds documentation generation to your GitHub Actions workflow.
-name: Swift
+name: create-docs
 on: 
   push:
     paths:
