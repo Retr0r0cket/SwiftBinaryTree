@@ -19,7 +19,7 @@ on:
   
 
 jobs:
-  build:
+  build-test-and-docs:
     name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
     strategy:
       matrix:
@@ -35,10 +35,15 @@ jobs:
         run: swift build -v
       - name: Run tests
         run: swift test -v
-      - name: Generate Documentation
-        run: swift package generate-documentation --target SwiftBinaryTree --output-path ./docs --transform-for-static-hosting
-      - name: Upload Documentation Artifact
-        uses: actions/upload-artifact@v4
+      - name: Create documentation
+        uses: fwcd/swift-docc-action@v1
         with:
-          name: docs
+          target: SwiftBinaryTree
+          output: ./docs
+          transform-for-static-hosting: 'true'
+          disable-indexing: 'true'
+          hosting-base-path: ./
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
           path: ./docs

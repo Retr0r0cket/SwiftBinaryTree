@@ -13,6 +13,12 @@ public enum BinaryTreeError: Error {
     case invalidNode
 }
 
+// To make GH Artifacts not want to kill me
+@_documentation(visibility: private)
+public func != (lhs: BinaryTreeError, rhs: BinaryTreeError) -> Bool {
+    return !(lhs == rhs)
+}
+
 /** A typealias for BinaryTreeNode that saves 10 chacters per use
     so you feel like you're saving time and the enviorment.
 */
@@ -34,7 +40,8 @@ public class BinaryTreeNode<T> {
     ///  - value: The value of the node.
     ///  - left: The left child of the node (optional).
     ///  - right: The right child of the node (optional).
-    public init(value: T, left: BinaryTreeNode? = nil, right: BinaryTreeNode? = nil) {
+    public init(value: T, left: BinaryTreeNode? = nil, right: BinaryTreeNode? = nil, parent: BinaryTreeNode? = nil) {
+        self.parent = parent
         self.value = value
         self.left = left
         self.right = right
@@ -47,11 +54,11 @@ public class BinaryTreeNode<T> {
         var rightHeight = 0
         var leftHeight = 0
 
-        if right != nil {
-            rightHeight = 1 + right!.getHeight()
+        if let right = right {
+            rightHeight = 1 + right.getHeight()
         }
-        if left != nil {
-            leftHeight = 1 + left!.getHeight()
+        if let left = left {
+            leftHeight = 1 + left.getHeight()
         }
         return max(leftHeight, rightHeight)
     }
