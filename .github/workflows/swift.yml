@@ -45,10 +45,7 @@ jobs:
           --transform-for-static-hosting \
           --hosting-base-path swift-package-manager
       - name: Deploy to GitHub Pages
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git switch gh-pages
-          git add ./docs
-          git commit -a -m "Generated Swift DocC"
-          git push origin gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
