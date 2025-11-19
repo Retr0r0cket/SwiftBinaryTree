@@ -2,7 +2,7 @@
 // Search.swift
 // SwiftBinaryTree
 //
-// Created by Rrtr0r0cket on 5/15/25.
+// Created by Retr0r0cket on 5/15/25.
 // 
 
 /// Uses the traversal methods to search for a node with a specific value
