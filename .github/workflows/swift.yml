@@ -3,13 +3,15 @@ name: swift
 on: 
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  
+    
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build-and-test:
@@ -23,29 +25,30 @@ jobs:
         run: swift build -v
       - name: Run tests
         run: swift test -v
-  make-docs:
+  # https://dev.to/natikgadzhi/automating-swift-docc-with-github-actions-2k44 was super useful for this
+  publish-docs:
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create documentation
-        uses: fwcd/swift-docc-action@v1
         with:
-          target: SwiftBinaryTree
-          output: docs
-          transform-for-static-hosting: 'true'
-          disable-indexing: 'true'
-          hosting-base-path: SwiftBinaryTree
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+          fetch-depth: 0
+      - uses: swift-actions/setup-swift@v2
         with:
-          path: docs
-  deploy-docs:
-    needs: make-docs
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
+          swift-version: "6.1"
+      - name: Build documentation
+        run: |
+          swift package --allow-writing-to-directory ./docs \
+          generate-documentation \
+          --output-path ./docs \
+          --disable-indexing \
+          --transform-for-static-hosting \
+          --hosting-base-path swift-package-manager
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git switch gh-pages
+          git add ./docs
+          git commit -a -m "Generated Swift DocC"
+          git push origin gh-pages
