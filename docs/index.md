@@ -1,2 +1,0 @@
-# SwiftBinaryTree Documentation
-
